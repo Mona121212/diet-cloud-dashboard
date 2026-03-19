@@ -26,7 +26,7 @@ ChartJS.register(
   Legend,
 );
 
-// Replace with your actual API endpoint
+// Replace with your actual API endpoint, will change later when deployed to Azure
 const API_URL =
   "https://diet-chart-dashboard-318.azurewebsites.net/api/analyze-diets";
 
