@@ -26,7 +26,9 @@ ChartJS.register(
   Legend,
 );
 
-const API_URL = import.meta.env.VITE_API_URL as string;
+// Replace with your actual API endpoint
+const API_URL =
+  "https://diet-chart-dashboard-318.azurewebsites.net/api/analyze-diets";
 
 const COLORS = [
   "#4f46e5",
@@ -130,10 +132,21 @@ function App() {
           ? API_URL
           : `${API_URL}?dietType=${encodeURIComponent(selectedDiet)}`;
 
-      const response = await fetch(url);
-      const data: ApiResponse = await response.json();
+      console.log("Request URL:", url);
 
-      if (!response.ok || data.success === false) {
+      const response = await fetch(url);
+      const text = await response.text();
+
+      console.log("Status:", response.status);
+      console.log("Raw response:", text);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data: ApiResponse = JSON.parse(text);
+
+      if (data.success === false) {
         throw new Error("Failed to fetch data");
       }
 
