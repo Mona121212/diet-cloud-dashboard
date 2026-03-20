@@ -1,152 +1,188 @@
-# Diet Analysis Cloud Dashboard
 
-## Project Overview
 
-This project is a cloud-based dashboard that analyzes a diet dataset and presents the results using charts. The backend is built with Azure Functions and processes data stored in Azure Blob Storage. The frontend is a React application that displays the results in a simple and interactive way.
+# 📊 Diet Analysis Cloud Dashboard
 
-The goal of this project was to understand how to build and deploy a full-stack application using Azure services instead of running everything locally.
+## 🚀 Project Overview
+
+This project is a cloud-based data analysis dashboard built using **Azure Functions** and a **React frontend**. It processes a diet dataset stored in Azure Blob Storage, performs data analysis, and visualizes the results through interactive charts.
+
+
+### ✨ Key Features
+
+* Serverless backend using Azure Functions
+* Cloud storage with Azure Blob Storage
+* Interactive charts (Bar, Line, Pie)
+* Dynamic filtering by diet type
+* Fully deployed on Azure Cloud
 
 ---
 
-## Azure Services Used
+## ☁️ Azure Services Used
+
+This project demonstrates cloud-native architecture using the following Azure services:
 
 * **Azure Static Web Apps**
-  Used to host and deploy the React frontend.
+  → Hosts the frontend React application
 
 * **Azure Functions**
-  Used as the backend API to process data and return results.
+  → Processes data and exposes REST API
 
 * **Azure Blob Storage**
-  Stores the dataset (`All_Diets.csv`) used for analysis.
+  → Stores the dataset (`All_Diets.csv`)
+
+* **Azure App Service (Function App)**
+  → Runs the backend function
 
 ---
 
-## Backend Setup
+## ⚙️ Backend Setup (Azure Function)
 
-The backend is located in the `/backend` folder and built using Python and Azure Functions.
+### 📁 Location
 
-### Main Responsibilities
-
-* Read CSV data from Azure Blob Storage
-* Clean and process the dataset
-* Generate aggregated results (diet counts, macros, cuisine types)
-* Return JSON data through an HTTP endpoint
-
-### Environment Variables
-
-The following environment variables are required:
-
+```text
+/backend
 ```
+
+### 🔧 Tech Stack
+
+* Python
+* Azure Functions SDK
+* Azure Blob Storage SDK
+
+### 🔑 Environment Variables
+
+```text
 AZURE_STORAGE_CONNECTION_STRING
 BLOB_CONTAINER_NAME=datasets
 BLOB_FILE_NAME=All_Diets.csv
 ```
 
-### Run Locally
+### ▶️ Run Locally
 
-```
+```bash
 cd backend
 func start
 ```
 
-### API Endpoint
+### 🌐 API Endpoint
 
-```
+```text
 GET /api/analyze-diets
 ```
 
-Optional query parameter:
+Optional query:
 
-```
+```text
 ?dietType=Vegetarian
 ```
 
 ---
 
-## Frontend Setup
+## 🎨 Frontend Setup (React + Vite)
 
-The frontend is located in the `/frontend` folder and built with React and Vite.
+### 📁 Location
 
-### Features
-
-* Displays charts using Chart.js (bar, line, pie)
-* Allows filtering by diet type
-* Shows summary information such as record count and execution time
-
-### Run Locally
-
+```text
+/frontend
 ```
+
+### 🔧 Tech Stack
+
+* React + TypeScript
+* Vite
+* Chart.js
+
+---
+
+### ▶️ Run Locally
+
+```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-### API Integration
+---
 
-The frontend calls the deployed Azure Function:
+### 🔗 API Integration
 
-```
-https://diet-chart-dashboard-318.azurewebsites.net/api/analyze-diets
+The frontend fetches data from:
+
+```ts
+const API_URL = "https://diet-chart-dashboard-318.azurewebsites.net/api/analyze-diets";
 ```
 
 ---
 
-## Deployment URLs
+## 🌍 Deployment URLs
 
-Frontend (Azure Static Web App):
+### 🖥 Frontend (Azure Static Web App)
 
-```
+```text
 https://witty-pond-0e08a300f.6.azurestaticapps.net
 ```
 
-Backend (Azure Function):
+---
 
-```
+### ⚙️ Backend (Azure Function API)
+
+```text
 https://diet-chart-dashboard-318.azurewebsites.net/api/analyze-diets
 ```
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
-You can add screenshots in a `/screenshots` folder.
+### 📊 Dashboard Overview
 
-Example:
+（👉 你可以把截图放在 `/screenshots` 文件夹，然后这样写）
 
-```
+```md
 ![Dashboard](./screenshots/dashboard.png)
+```
+
+---
+
+### 📈 Charts Example
+
+```md
 ![Charts](./screenshots/charts.png)
 ```
 
 ---
 
-## What I Learned
+## 🧠 What I Learned
 
-* How to deploy a serverless backend using Azure Functions
-* How to store and access data using Azure Blob Storage
-* How to connect a frontend application to a cloud API
-* How to debug real deployment issues such as CORS and environment variables
-* How to use GitHub Actions for CI/CD deployment
-
----
-
-## Challenges
-
-One of the main challenges was dealing with deployment and integration issues. For example:
-
-* The frontend initially failed to fetch data due to incorrect environment variable configuration
-* The API returned errors due to missing Blob Storage settings
-* CORS needed to be configured in Azure Functions to allow requests from the frontend
-
-These issues helped me understand how different cloud components interact with each other.
+* Deploying serverless functions on Azure
+* Handling cloud storage with Blob Storage
+* Building full-stack cloud applications
+* Debugging real-world issues (CORS, CI/CD, env variables)
+* Integrating frontend with cloud backend
 
 ---
 
-## Future Improvements
+## 🔥 Challenges & Solutions
 
-* Improve UI design and layout
-* Add authentication (login system)
-* Support more filtering options
-* Optimize performance for larger datasets
+| Challenge                          | Solution                                     |
+| ---------------------------------- | -------------------------------------------- |
+| CORS error                         | Configured allowed origins in Azure Function |
+| Environment variables not working  | Rebuilt frontend with correct config         |
+| GitHub Actions deployment failed   | Fixed deployment token & workflow            |
+| API returning HTML instead of JSON | Corrected API endpoint                       |
+
+---
+
+## 🧩 Future Improvements
+
+* Add authentication (Azure AD / JWT)
+* Improve UI/UX design
+* Add more advanced analytics
+* Enable real-time data updates
+
+---
 
 
+```text
+Built a full-stack cloud-native dashboard using Azure Functions, Blob Storage, and React, handling real-world deployment challenges like CORS, CI/CD, and environment configuration.
+```
