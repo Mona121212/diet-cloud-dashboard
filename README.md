@@ -132,22 +132,6 @@ https://diet-chart-dashboard-318.azurewebsites.net/api/analyze-diets
 
 ---
 
-## 📸 Screenshots
-
-### 📊 Dashboard Overview
-
-```md
-![Dashboard](./screenshots/dashboard.png)
-```
-
----
-
-### 📈 Charts Example
-
-```md
-![Charts](./screenshots/charts.png)
-```
-
 ---
 
 ## 🧠 What I Learned
