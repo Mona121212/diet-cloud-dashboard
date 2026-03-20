@@ -136,8 +136,6 @@ https://diet-chart-dashboard-318.azurewebsites.net/api/analyze-diets
 
 ### 📊 Dashboard Overview
 
-（👉 你可以把截图放在 `/screenshots` 文件夹，然后这样写）
-
 ```md
 ![Dashboard](./screenshots/dashboard.png)
 ```
