@@ -200,6 +200,22 @@
   align-items: center;
 }
 
+.dashboard__filters--recipe {
+  margin-top: 12px;
+}
+
+.dashboard__filters-hint {
+  margin: 10px 0 0;
+  font-size: 0.82rem;
+  color: #6c757d;
+  max-width: 52rem;
+}
+
+.dashboard__input--grow {
+  flex: 1 1 280px;
+  max-width: min(520px, 100%);
+}
+
 .dashboard__input,
 .dashboard__select {
   padding: 9px 14px;

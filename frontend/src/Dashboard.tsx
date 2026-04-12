@@ -130,6 +130,7 @@ export function Dashboard({ session }: DashboardProps) {
   const [apiData, setApiData] = useState<ApiResponse | null>(null);
   const [dietType, setDietType] = useState<string>("all");
   const [searchDiet, setSearchDiet] = useState<string>("");
+  const [recipeKeyword, setRecipeKeyword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [infoMessage, setInfoMessage] = useState<string>("");
@@ -188,6 +189,10 @@ export function Dashboard({ session }: DashboardProps) {
       });
       if (dietType && dietType !== "all") {
         params.set("dietType", dietType);
+      }
+      const kw = recipeKeyword.trim();
+      if (kw) {
+        params.set("keyword", kw);
       }
       const url = `${RECIPES_URL}?${params.toString()}`;
       const response = await fetch(url);
@@ -442,10 +447,10 @@ export function Dashboard({ session }: DashboardProps) {
             <input
               type="search"
               className="dashboard__input"
-              placeholder="Search by Diet Type"
+              placeholder="Filter diet types in list"
               value={searchDiet}
               onChange={(e) => setSearchDiet(e.target.value)}
-              aria-label="Search by diet type"
+              aria-label="Filter diet types in dropdown"
             />
             <select
               className="dashboard__select"
@@ -462,6 +467,25 @@ export function Dashboard({ session }: DashboardProps) {
                 </option>
               ))}
             </select>
+          </div>
+          <p className="dashboard__filters-hint">
+            Chart filter uses the dropdown. Recipe API uses diet type + keyword below.
+          </p>
+          <div className="dashboard__filters dashboard__filters--recipe">
+            <input
+              type="search"
+              className="dashboard__input dashboard__input--grow"
+              placeholder="Recipe or cuisine keyword (Get Recipes)"
+              value={recipeKeyword}
+              onChange={(e) => setRecipeKeyword(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  void fetchRecipes(1);
+                }
+              }}
+              aria-label="Search recipes by keyword"
+            />
           </div>
         </section>
 

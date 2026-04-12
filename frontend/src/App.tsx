@@ -10,9 +10,6 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7643/ingest/b35ced89-ce75-44db-8592-58f1a1a3f325',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'bd572d'},body:JSON.stringify({sessionId:'bd572d',runId:'pre-fix',hypothesisId:'H4',location:'App.tsx',message:'app_mount',data:{},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
     let cancelled = false;
 
     void supabase.auth.getSession().then(({ data }) => {
