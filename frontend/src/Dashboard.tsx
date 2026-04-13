@@ -28,8 +28,10 @@ ChartJS.register(
   Legend,
 );
 
-const INSIGHTS_URL = "http://localhost:7071/api/dashboard-summary";
-const RECIPES_URL = "http://localhost:7071/api/recipes";
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL ?? "http://localhost:7071/api";
+const INSIGHTS_URL = `${API_BASE.replace(/\/$/, "")}/dashboard-summary`;
+const RECIPES_URL = `${API_BASE.replace(/\/$/, "")}/recipes`;
 
 const COLORS = [
   "#4f46e5",

@@ -7,7 +7,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, __dirname, "VITE_");
+  const fileEnv = loadEnv(mode, __dirname, "VITE_");
+  const env: Record<string, string> = { ...fileEnv };
+  for (const key of Object.keys(process.env)) {
+    if (key.startsWith("VITE_") && process.env[key] != null) {
+      env[key] = process.env[key] as string;
+    }
+  }
 
   if (!env.VITE_SUPABASE_URL || !env.VITE_SUPABASE_ANON_KEY) {
     console.warn(
