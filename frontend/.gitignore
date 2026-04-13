@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# CI generates this for Azure SWA; do not commit production secrets
+.env.production
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

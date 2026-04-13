@@ -14,11 +14,39 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
+    env:
+      VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
           lfs: false
+
+      # Azure/static-web-apps-deploy runs Vite in an isolated build; job-level `env` is often NOT visible there.
+      # Writing frontend/.env.production ensures loadEnv(mode) picks up VITE_* during `vite build` (evidence: ci_check lines below).
+      - name: Write frontend/.env.production for Vite (SWA build)
+        working-directory: frontend
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          set -e
+          if [ -n "$VITE_SUPABASE_URL" ]; then echo "ci_check hypothesisId=H1 secret_VITE_SUPABASE_URL_set=yes"; else echo "ci_check hypothesisId=H1 secret_VITE_SUPABASE_URL_set=no"; fi
+          if [ -n "$VITE_SUPABASE_ANON_KEY" ]; then echo "ci_check hypothesisId=H1 secret_VITE_SUPABASE_ANON_KEY_set=yes"; else echo "ci_check hypothesisId=H1 secret_VITE_SUPABASE_ANON_KEY_set=no"; fi
+          if [ -n "$VITE_API_BASE_URL" ]; then echo "ci_check hypothesisId=H1 secret_VITE_API_BASE_URL_set=yes"; else echo "ci_check hypothesisId=H1 secret_VITE_API_BASE_URL_set=no"; fi
+          : > .env.production
+          [ -n "$VITE_API_BASE_URL" ] && printf 'VITE_API_BASE_URL=%s\n' "$VITE_API_BASE_URL" >> .env.production
+          [ -n "$VITE_SUPABASE_URL" ] && printf 'VITE_SUPABASE_URL=%s\n' "$VITE_SUPABASE_URL" >> .env.production
+          [ -n "$VITE_SUPABASE_ANON_KEY" ] && printf 'VITE_SUPABASE_ANON_KEY=%s\n' "$VITE_SUPABASE_ANON_KEY" >> .env.production
+          if [ ! -s .env.production ]; then
+            echo "::error::No VITE_* values written. Add repository secrets: VITE_API_BASE_URL, VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY"
+            exit 1
+          fi
+          echo "ci_check hypothesisId=H2 env_production_line_count=$(wc -l < .env.production)"
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
