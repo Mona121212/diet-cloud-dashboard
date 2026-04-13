@@ -30,6 +30,7 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     // Vite ignores define() for import.meta.env.* — use dedicated globals instead.
     define: {
+      __APP_API_BASE__: JSON.stringify(env.VITE_API_BASE_URL ?? ""),
       __APP_SUPABASE_URL__: JSON.stringify(env.VITE_SUPABASE_URL ?? ""),
       __APP_SUPABASE_ANON_KEY__: JSON.stringify(
         env.VITE_SUPABASE_ANON_KEY ?? "",
