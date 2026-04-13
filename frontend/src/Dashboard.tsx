@@ -28,10 +28,14 @@ ChartJS.register(
   Legend,
 );
 
+// `??` does not treat "" as missing; empty VITE_API_BASE_URL would become a relative URL (/dashboard-summary) → 404 on Static Web Apps.
+const rawApiBase = import.meta.env.VITE_API_BASE_URL;
 const API_BASE =
-  import.meta.env.VITE_API_BASE_URL ?? "http://localhost:7071/api";
-const INSIGHTS_URL = `${API_BASE.replace(/\/$/, "")}/dashboard-summary`;
-const RECIPES_URL = `${API_BASE.replace(/\/$/, "")}/recipes`;
+  typeof rawApiBase === "string" && rawApiBase.trim() !== ""
+    ? rawApiBase.trim().replace(/\/$/, "")
+    : "http://localhost:7071/api";
+const INSIGHTS_URL = `${API_BASE}/dashboard-summary`;
+const RECIPES_URL = `${API_BASE}/recipes`;
 
 const COLORS = [
   "#4f46e5",
