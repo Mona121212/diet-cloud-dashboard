@@ -28,11 +28,18 @@ ChartJS.register(
   Legend,
 );
 
-// `??` does not treat "" as missing; empty VITE_API_BASE_URL would become a relative URL (/dashboard-summary) → 404 on Static Web Apps.
-const rawApiBase = import.meta.env.VITE_API_BASE_URL;
+// Prefer __APP_API_BASE__ (vite define from CI env); SWA/Oryx inner build often misses import.meta.env.VITE_* injection.
+const fromDefine =
+  typeof __APP_API_BASE__ !== "undefined" && String(__APP_API_BASE__).trim() !== ""
+    ? String(__APP_API_BASE__).trim()
+    : "";
+const fromMeta = import.meta.env.VITE_API_BASE_URL;
+const rawApiBase =
+  fromDefine ||
+  (typeof fromMeta === "string" && fromMeta.trim() !== "" ? fromMeta.trim() : "");
 const API_BASE =
-  typeof rawApiBase === "string" && rawApiBase.trim() !== ""
-    ? rawApiBase.trim().replace(/\/$/, "")
+  rawApiBase !== ""
+    ? rawApiBase.replace(/\/$/, "")
     : "http://localhost:7071/api";
 const INSIGHTS_URL = `${API_BASE}/dashboard-summary`;
 const RECIPES_URL = `${API_BASE}/recipes`;
